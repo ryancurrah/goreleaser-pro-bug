@@ -1,0 +1,60 @@
+# This is an example .goreleaser.yml file with some sensible defaults.
+# Make sure to check the documentation at https://goreleaser.com
+includes:
+  - from_file:
+      path: .goreleaser.common.yml
+
+project_name: helloworld
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+builds:
+  - id: api
+    main: ./cmd/api/main.go
+    flags:
+      - -trimpath
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+  - id: worker
+    main: ./cmd/worker/main.go
+    flags:
+      - -trimpath
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+  - id: cli
+    main: ./cmd/cli/main.go
+    flags:
+      - -trimpath
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+    goarch:
+      - amd64
+
+archives:
+  - id: cli
+    format: tar.gz
+    builds:
+      - cli
+    replacements:
+      darwin: Darwin
+      linux: Linux
+    files:
+      - none*
