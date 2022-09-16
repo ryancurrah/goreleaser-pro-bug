@@ -55,6 +55,5 @@ archives:
       - cli
     replacements:
       darwin: Darwin
-      linux: Linux
     files:
       - none*
